@@ -6,11 +6,20 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="tradesystem" />
+        <module name="tradecommon" />
+        <module name="tradecoupon" />
+        <module name="tradeorder" />
+        <module name="tradepay" />
+        <module name="tradeweb" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="tradecommon" target="1.5" />
+      <module name="tradecoupon" target="1.5" />
+      <module name="tradeorder" target="1.5" />
+      <module name="tradepay" target="1.5" />
       <module name="tradesystem" target="1.5" />
+      <module name="tradeweb" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>

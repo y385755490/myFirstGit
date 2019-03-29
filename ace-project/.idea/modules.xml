@@ -2,8 +2,12 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/tradesystem/trade-common/tradecommon.iml" filepath="$PROJECT_DIR$/tradesystem/trade-common/tradecommon.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tradesystem/trade-coupon/tradecoupon.iml" filepath="$PROJECT_DIR$/tradesystem/trade-coupon/tradecoupon.iml" />
       <module fileurl="file://$PROJECT_DIR$/tradesystem/trade-order/tradeorder.iml" filepath="$PROJECT_DIR$/tradesystem/trade-order/tradeorder.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tradesystem/trade-pay/tradepay.iml" filepath="$PROJECT_DIR$/tradesystem/trade-pay/tradepay.iml" />
       <module fileurl="file://$PROJECT_DIR$/tradesystem/tradesystem.iml" filepath="$PROJECT_DIR$/tradesystem/tradesystem.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tradesystem/trade-web/tradeweb.iml" filepath="$PROJECT_DIR$/tradesystem/trade-web/tradeweb.iml" />
     </modules>
   </component>
 </project>
