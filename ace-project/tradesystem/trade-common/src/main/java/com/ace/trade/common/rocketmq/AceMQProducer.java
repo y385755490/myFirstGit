@@ -51,12 +51,13 @@ public class AceMQProducer {
         this.producer.setNamesrvAddr(this.nameSrvAddr);
         this.producer.setMaxMessageSize(this.maxMessageSize);
         this.producer.setSendMsgTimeout(this.sendMsgTimeout);
+        this.producer.setVipChannelEnabled(false);
 
         try {
             producer.start();
             LOGGER.info("producer is start!groupName:[{}],nameSrvAddr:[{}]",this.groupName,this.nameSrvAddr);
         } catch (MQClientException e) {
-            LOGGER.error("producer error!groupName:[{}],nameSrvAddr:[{}]",this.groupName,this.nameSrvAddr);
+            LOGGER.error("producer is error!groupName:[{}],nameSrvAddr:[{}]",this.groupName,this.nameSrvAddr);
             throw new AceMQException(e);
         }
     }
@@ -73,7 +74,7 @@ public class AceMQProducer {
             SendResult sendResult = this.producer.send(message);
             return sendResult;
         } catch (Exception e) {
-            LOGGER.error("send message error:",e.getMessage());
+            LOGGER.error("send message error:{}",e.getMessage());
             throw new AceMQException(e);
         }
     }

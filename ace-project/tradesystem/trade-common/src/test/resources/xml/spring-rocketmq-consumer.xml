@@ -2,8 +2,11 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-    <bean id="aceMQProducer" class="com.ace.trade.common.rocketmq.AceMQProducer" init-method="init">
-        <property name="groupName" value="AceMQProducerGroup"/>
+    <bean id="processor" class="TestProcessor"/>
+    <bean id="aceMQConsumer" class="com.ace.trade.common.rocketmq.AceMQConsumer" init-method="init">
+        <property name="groupName" value="AceMQConsumerGroup"/>
         <property name="nameSrvAddr" value="192.168.43.136:9876;192.168.43.178:9876"/>
+        <property name="topic" value="TestTopic"/>
+        <property name="messageProcessor" ref="processor"/>
     </bean>
 </beans>
