@@ -6,11 +6,12 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="trade-web" />
-        <module name="trade-coupon" />
-        <module name="trade-pay" />
-        <module name="trade-order" />
         <module name="trade-common" />
+        <module name="trade-coupon" />
+        <module name="trade-dao" />
+        <module name="trade-order" />
+        <module name="trade-pay" />
+        <module name="trade-web" />
       </profile>
     </annotationProcessing>
   </component>
