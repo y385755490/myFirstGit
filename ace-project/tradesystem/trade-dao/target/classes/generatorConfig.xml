@@ -11,33 +11,33 @@
             <property name="suppressAllComments" value="true"/>
             <property name="suppressData" value="true"/>
         </commentGenerator>
-        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://192.168.43.136:3306/trade"
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://192.168.31.115:3306/trade"
                         userId="y385755490"
-                        password="5201314402">
+                        password="ymd65717365YMD!">
         </jdbcConnection>
 
         <javaTypeResolver>
             <property name="forceBigDecimals" value="true"/>
         </javaTypeResolver>
 
-        <javaModelGenerator targetPackage="com.ace.trade.entity" targetProject="THIS_CONFIGURATION_REQUIRED">
+        <javaModelGenerator targetPackage="com.ace.trade.entity" targetProject="E:\idea\myFirstGit\ace-project\tradesystem\trade-dao\src\main\java">
             <property name="enableSubPackages" value="true"/>
             <property name="trimStrings" value="true"/>
         </javaModelGenerator>
 
         <sqlMapGenerator targetPackage="sqlmap.com.ace.trade.mapper"
-                         targetProject="E:/myFirstGit/ace-project/tradesystem/src/main/resources">
+                         targetProject="E:\idea\myFirstGit\ace-project\tradesystem\trade-dao\src\main\resources">
             <property name="enableSubPackages" value="false"/>
         </sqlMapGenerator>
 
         <javaClientGenerator type="XMLMAPPER" targetPackage="com.ace.trade.mapper"
-                             targetProject="E:/myFirstGit/ace-project/tradesystem/src/main/java">
+                             targetProject="E:\idea\myFirstGit\ace-project\tradesystem\trade-dao\src\main\java">
             <property name="enableSubPackages" value="false"/>
         </javaClientGenerator>
 
-        <table tableName="Customer" domainObjectName="Customer" enableCountByExample="false"
-               enableDeleteByExample="false" enableUpdateByExample="false" enableSelectByExample="false">
+        <table tableName="trade_coupon" enableCountByExample="true"
+               enableDeleteByExample="true" enableUpdateByExample="true" enableSelectByExample="true">
         </table>
 
     </context>
