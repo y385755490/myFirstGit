@@ -11,6 +11,7 @@
         <module name="trade-dao" />
         <module name="trade-order" />
         <module name="trade-pay" />
+        <module name="trade-user" />
         <module name="trade-web" />
       </profile>
     </annotationProcessing>
