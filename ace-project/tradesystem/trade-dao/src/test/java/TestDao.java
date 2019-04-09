@@ -1,6 +1,4 @@
-import com.ace.trade.entity.TradeCoupon;
 import com.ace.trade.entity.TradeUser;
-import com.ace.trade.mapper.TradeCouponMapper;
 import com.ace.trade.mapper.TradeUserMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;

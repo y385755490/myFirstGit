@@ -1,11 +1,11 @@
-package com.ace.trade.usr.service.impl;
+package com.ace.trade.user.service.impl;
 
 import com.ace.trade.common.constants.TradeEnums;
 import com.ace.trade.common.protocol.user.QueryUserReq;
 import com.ace.trade.common.protocol.user.QueryUserRes;
 import com.ace.trade.entity.TradeUser;
 import com.ace.trade.mapper.TradeUserMapper;
-import com.ace.trade.usr.service.IUserService;
+import com.ace.trade.user.service.IUserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

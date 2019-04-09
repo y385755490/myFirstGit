@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PersistentConfig">
+    <option name="historyConfigList">
+      <map>
+        <entry key="trade_goods">
+          <value>
+            <Config>
+              <option name="comment" value="true" />
+              <option name="daoMvnPath" value="src/main/java" />
+              <option name="daoName" value="TradeGoodsMapper" />
+              <option name="daoPackage" value="com.ace.trade.mapper" />
+              <option name="daoPostfix" value="Mapper" />
+              <option name="daoTargetFolder" value="$PROJECT_DIR$/trade-dao" />
+              <option name="modelMvnPath" value="src/main/java" />
+              <option name="modelName" value="TradeGoods" />
+              <option name="modelPackage" value="com.ace.trade.entity" />
+              <option name="modelTargetFolder" value="$PROJECT_DIR$/trade-dao" />
+              <option name="mysql_8" value="true" />
+              <option name="name" value="trade_goods" />
+              <option name="needToStringHashcodeEquals" value="true" />
+              <option name="offsetLimit" value="true" />
+              <option name="overrideXML" value="true" />
+              <option name="primaryKey" value="goods_id" />
+              <option name="projectFolder" value="$PROJECT_DIR$/trade-dao" />
+              <option name="tableName" value="trade_goods" />
+              <option name="useExample" value="true" />
+              <option name="useSchemaPrefix" value="true" />
+              <option name="xmlMvnPath" value="sqlmap/com/ace/trade" />
+              <option name="xmlPackage" value="mapper" />
+              <option name="xmlTargetFolder" value="E:\idea\myFirstGit\ace-project\tradesystem\trade-dao\src\main\resources" />
+            </Config>
+          </value>
+        </entry>
+        <entry key="trade_goods_number_log">
+          <value>
+            <Config>
+              <option name="comment" value="true" />
+              <option name="daoMvnPath" value="src/main/java" />
+              <option name="daoName" value="TradeGoodsNumberLogMapper" />
+              <option name="daoPackage" value="com.ace.trade.mapper" />
+              <option name="daoPostfix" value="Mapper" />
+              <option name="daoTargetFolder" value="$PROJECT_DIR$/trade-dao" />
+              <option name="modelMvnPath" value="src/main/java" />
+              <option name="modelName" value="TradeGoodsNumberLog" />
+              <option name="modelPackage" value="com.ace.trade.entity" />
+              <option name="modelTargetFolder" value="$PROJECT_DIR$/trade-dao" />
+              <option name="mysql_8" value="true" />
+              <option name="name" value="trade_goods_number_log" />
+              <option name="needToStringHashcodeEquals" value="true" />
+              <option name="offsetLimit" value="true" />
+              <option name="overrideXML" value="true" />
+              <option name="primaryKey" value="goods_id" />
+              <option name="projectFolder" value="$PROJECT_DIR$/trade-dao" />
+              <option name="tableName" value="trade_goods_number_log" />
+              <option name="useExample" value="true" />
+              <option name="useSchemaPrefix" value="true" />
+              <option name="xmlMvnPath" value="sqlmap/com/ace/trade" />
+              <option name="xmlPackage" value="mapper" />
+              <option name="xmlTargetFolder" value="E:\idea\myFirstGit\ace-project\tradesystem\trade-dao\src\main\resources" />
+            </Config>
+          </value>
+        </entry>
+        <entry key="trade_order">
+          <value>
+            <Config>
+              <option name="comment" value="true" />
+              <option name="daoMvnPath" value="src/main/java" />
+              <option name="daoName" value="TradeOrderMapper" />
+              <option name="daoPackage" value="com.ace.trade.mapper" />
+              <option name="daoPostfix" value="Mapper" />
+              <option name="daoTargetFolder" value="$PROJECT_DIR$/trade-dao" />
+              <option name="modelMvnPath" value="src/main/java" />
+              <option name="modelName" value="TradeOrder" />
+              <option name="modelPackage" value="com.ace.trade.entity" />
+              <option name="modelTargetFolder" value="$PROJECT_DIR$/trade-dao" />
+              <option name="mysql_8" value="true" />
+              <option name="name" value="trade_order" />
+              <option name="needToStringHashcodeEquals" value="true" />
+              <option name="offsetLimit" value="true" />
+              <option name="overrideXML" value="true" />
+              <option name="primaryKey" value="order_id" />
+              <option name="projectFolder" value="$PROJECT_DIR$/trade-dao" />
+              <option name="tableName" value="trade_order" />
+              <option name="useExample" value="true" />
+              <option name="useSchemaPrefix" value="true" />
+              <option name="xmlMvnPath" value="src/main/resources" />
+              <option name="xmlPackage" value="sqlmap.com.ace.trade.mapper" />
+              <option name="xmlTargetFolder" value="E:\idea\myFirstGit\ace-project\tradesystem\trade-dao" />
+            </Config>
+          </value>
+        </entry>
+        <entry key="trade_pay">
+          <value>
+            <Config>
+              <option name="comment" value="true" />
+              <option name="daoMvnPath" value="src/main/java" />
+              <option name="daoName" value="TradePayMapper" />
+              <option name="daoPackage" value="com.ace.trade.mapper" />
+              <option name="daoPostfix" value="Mapper" />
+              <option name="daoTargetFolder" value="$PROJECT_DIR$/trade-dao" />
+              <option name="modelMvnPath" value="src/main/java" />
+              <option name="modelName" value="TradePay" />
+              <option name="modelPackage" value="com.ace.trade.entity" />
+              <option name="modelTargetFolder" value="$PROJECT_DIR$/trade-dao" />
+              <option name="mysql_8" value="true" />
+              <option name="name" value="trade_pay" />
+              <option name="needToStringHashcodeEquals" value="true" />
+              <option name="offsetLimit" value="true" />
+              <option name="overrideXML" value="true" />
+              <option name="primaryKey" value="pay_id" />
+              <option name="projectFolder" value="$PROJECT_DIR$/trade-dao" />
+              <option name="tableName" value="trade_pay" />
+              <option name="useExample" value="true" />
+              <option name="useSchemaPrefix" value="true" />
+              <option name="xmlMvnPath" value="src/main/resources" />
+              <option name="xmlPackage" value="sqlmap.com.ace.trade.mapper" />
+              <option name="xmlTargetFolder" value="E:\idea\myFirstGit\ace-project\tradesystem\trade-dao" />
+            </Config>
+          </value>
+        </entry>
+        <entry key="trade_user">
+          <value>
+            <Config>
+              <option name="comment" value="true" />
+              <option name="daoMvnPath" value="src/main/java" />
+              <option name="daoName" value="TradeUserMapper" />
+              <option name="daoPackage" value="com.ace.trade.mapper" />
+              <option name="daoPostfix" value="Mapper" />
+              <option name="daoTargetFolder" value="$PROJECT_DIR$/trade-dao" />
+              <option name="modelMvnPath" value="src/main/java" />
+              <option name="modelName" value="TradeUser" />
+              <option name="modelPackage" value="com.ace.trade.entity" />
+              <option name="modelTargetFolder" value="$PROJECT_DIR$/trade-dao" />
+              <option name="mysql_8" value="true" />
+              <option name="name" value="trade_user" />
+              <option name="needToStringHashcodeEquals" value="true" />
+              <option name="offsetLimit" value="true" />
+              <option name="overrideXML" value="true" />
+              <option name="primaryKey" value="user_id" />
+              <option name="projectFolder" value="$PROJECT_DIR$/trade-dao" />
+              <option name="tableName" value="trade_user" />
+              <option name="useExample" value="true" />
+              <option name="useSchemaPrefix" value="true" />
+              <option name="xmlMvnPath" value="src/main/resources" />
+              <option name="xmlPackage" value="sqlmap.com.ace.trade.mapper" />
+              <option name="xmlTargetFolder" value="E:\idea\myFirstGit\ace-project\tradesystem\trade-dao" />
+            </Config>
+          </value>
+        </entry>
+        <entry key="trade_user_money_log">
+          <value>
+            <Config>
+              <option name="comment" value="true" />
+              <option name="daoMvnPath" value="src/main/java" />
+              <option name="daoName" value="TradeUserMoneyLogMapper" />
+              <option name="daoPackage" value="com.ace.trade.mapper" />
+              <option name="daoPostfix" value="Mapper" />
+              <option name="daoTargetFolder" value="$PROJECT_DIR$/trade-dao" />
+              <option name="modelMvnPath" value="src/main/java" />
+              <option name="modelName" value="TradeUserMoneyLog" />
+              <option name="modelPackage" value="com.ace.trade.entity" />
+              <option name="modelTargetFolder" value="$PROJECT_DIR$/trade-dao" />
+              <option name="mysql_8" value="true" />
+              <option name="name" value="trade_user_money_log" />
+              <option name="needToStringHashcodeEquals" value="true" />
+              <option name="offsetLimit" value="true" />
+              <option name="overrideXML" value="true" />
+              <option name="primaryKey" value="user_id" />
+              <option name="projectFolder" value="$PROJECT_DIR$/trade-dao" />
+              <option name="tableName" value="trade_user_money_log" />
+              <option name="useExample" value="true" />
+              <option name="useSchemaPrefix" value="true" />
+              <option name="xmlMvnPath" value="src/main/resources" />
+              <option name="xmlPackage" value="sqlmap.com.ace.trade.mapper" />
+              <option name="xmlTargetFolder" value="E:\idea\myFirstGit\ace-project\tradesystem\trade-dao" />
+            </Config>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="users">
+      <map>
+        <entry key="jdbc:mysql://192.168.31.115:3306/trade">
+          <value>
+            <User>
+              <option name="username" value="y385755490" />
+            </User>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
