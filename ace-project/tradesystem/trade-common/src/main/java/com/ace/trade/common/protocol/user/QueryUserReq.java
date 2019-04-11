@@ -1,6 +1,8 @@
 package com.ace.trade.common.protocol.user;
 
-public class QueryUserReq {
+import java.io.Serializable;
+
+public class QueryUserReq implements Serializable {
     private Integer userId;
 
     public Integer getUserId() {

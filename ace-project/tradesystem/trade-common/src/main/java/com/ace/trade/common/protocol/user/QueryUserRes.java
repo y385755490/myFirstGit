@@ -2,10 +2,11 @@ package com.ace.trade.common.protocol.user;
 
 import com.ace.trade.common.protocol.BaseRes;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class QueryUserRes extends BaseRes {
+public class QueryUserRes extends BaseRes implements Serializable {
     /**
      * 用户ID
      */
@@ -82,5 +83,18 @@ public class QueryUserRes extends BaseRes {
 
     public void setUserMoney(BigDecimal userMoney) {
         this.userMoney = userMoney;
+    }
+
+    @Override
+    public String
+    toString() {
+        return "QueryUserRes{" +
+                "userId=" + userId +
+                ", userName='" + userName + '\'' +
+                ", userMobile='" + userMobile + '\'' +
+                ", userScore=" + userScore +
+                ", userRegTime=" + userRegTime +
+                ", userMoney=" + userMoney +
+                '}';
     }
 }

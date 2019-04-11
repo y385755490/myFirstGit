@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
+import java.util.Map;
+
 @Controller
 public class UserApiImpl implements IUserApi {
     @Autowired
@@ -21,4 +24,5 @@ public class UserApiImpl implements IUserApi {
     public QueryUserRes queryUserById(@RequestBody QueryUserReq queryUserReq) {
         return this.userService.queryUserById(queryUserReq);
     }
+
 }

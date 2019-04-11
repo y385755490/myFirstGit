@@ -35,6 +35,6 @@ public class UserServiceImpl implements IUserService {
             queryUserRes.setRetCode(TradeEnums.RetEnum.SUCCESS.getCode());
             queryUserRes.setRetInfo(TradeEnums.RetEnum.SUCCESS.getDesc());
         }
-        return null;
+        return queryUserRes;
     }
 }
