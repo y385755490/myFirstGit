@@ -1,7 +1,6 @@
 package com.ace.trade.common.client;
 
 import com.ace.trade.common.constants.TradeEnums;
-import com.ace.trade.common.protocol.user.QueryUserRes;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.web.client.RestTemplate;
 
@@ -27,15 +26,16 @@ public class RestClientProxyFactoryBeanSpring implements FactoryBean {
     }
 
     public Class<?> getObjectType() {
-        return null;
+        return serviceInterface;
     }
 
     public boolean isSingleton() {
-        return false;
+        return true;
     }
 
     private class ClientProxy implements InvocationHandler {
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+
             return restTemplate.postForObject(TradeEnums.RestServerEnum.USER.getServerUrl() + method.getName(),
                     args[0],method.getReturnType());
         }
