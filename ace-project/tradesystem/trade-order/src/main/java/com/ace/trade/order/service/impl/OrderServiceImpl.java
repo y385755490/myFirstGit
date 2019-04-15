@@ -47,8 +47,15 @@ public class OrderServiceImpl implements IOrderService {
         String orderId = IDGenerator.generatorID();
         tradeOrder.setOrderId(orderId);
         tradeOrder.setUserId(confirmOrderReq.getUserId());
-        tradeOrder.setOrderStatus(TradeEnums.OrderStatusEnum.CONFIRM.getStatusCode());
-
+        tradeOrder.setOrderStatus(TradeEnums.OrderStatusEnum.NO_CONFIRM.getStatusCode());
+        tradeOrder.setPayStatus(TradeEnums.PayStatusEnum.NO_PAY.getStatusCode());
+        tradeOrder.setShoppingStatus(TradeEnums.ShippingStatusEnum.NO_SHIP.getStatusCode());
+        tradeOrder.setAddress(confirmOrderReq.getAddress());
+        tradeOrder.setConsignee(confirmOrderReq.getConsignee());
+        tradeOrder.setGoodsId(confirmOrderReq.getGoodsId());
+        tradeOrder.setGoodsNumber(confirmOrderReq.getGoodsNumber());
+        tradeOrder.setGoodsPrice(confirmOrderReq.getGoodsPrice());
+        tradeOrder.setGoodsAmount(confirmOrderReq.getGoodsPrice().multiply(new BigDecimal(confirmOrderReq.getGoodsNumber())));
 
         int ret = this.tradeOrderMapper.insert(tradeOrder);
         if (ret != 1){

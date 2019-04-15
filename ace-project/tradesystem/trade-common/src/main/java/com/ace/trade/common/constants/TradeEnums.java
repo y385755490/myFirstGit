@@ -76,5 +76,45 @@ public class TradeEnums {
         }
     }
 
+    public enum PayStatusEnum{
+        NO_PAY("0","未付款"),PAYING("1","支付中"),PAID("2","已付款");
+
+        private String statusCode;
+        private String desc;
+
+        PayStatusEnum(String statusCode, String desc) {
+            this.statusCode = statusCode;
+            this.desc = desc;
+        }
+
+        public String getStatusCode() {
+            return statusCode;
+        }
+
+        public String getDesc() {
+            return desc;
+        }
+    }
+
+    public enum ShippingStatusEnum{
+        NO_SHIP("0","未发货"),SHIPPED("1","已发货"),RECEVIED("2","已收货");
+
+        private String statusCode;
+        private String desc;
+
+        ShippingStatusEnum(String statusCode, String desc) {
+            this.statusCode = statusCode;
+            this.desc = desc;
+        }
+
+        public String getStatusCode() {
+            return statusCode;
+        }
+
+        public String getDesc() {
+            return desc;
+        }
+    }
+
 
 }
