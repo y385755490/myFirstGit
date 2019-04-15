@@ -55,4 +55,26 @@ public class TradeEnums {
             return desc;
         }
     }
+
+    public enum OrderStatusEnum{
+        NO_CONFIRM("0","未确认"),CONFIRM("1","已确认"),CANCEL("2","已取消"),INVALID("3","无效"),RETURNED("4","退回");
+
+        private String statusCode;
+        private String desc;
+
+        OrderStatusEnum(String statusCode, String desc) {
+            this.statusCode = statusCode;
+            this.desc = desc;
+        }
+
+        public String getStatusCode() {
+            return statusCode;
+        }
+
+        public String getDesc() {
+            return desc;
+        }
+    }
+
+
 }

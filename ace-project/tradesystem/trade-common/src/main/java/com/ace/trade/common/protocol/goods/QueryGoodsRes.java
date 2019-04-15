@@ -1,9 +1,11 @@
 package com.ace.trade.common.protocol.goods;
 
+import com.ace.trade.common.protocol.BaseRes;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class QueryGoodsRes {
+public class QueryGoodsRes extends BaseRes {
     /**
      * 商品ID
      */
