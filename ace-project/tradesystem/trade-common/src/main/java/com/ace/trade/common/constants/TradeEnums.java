@@ -116,5 +116,25 @@ public class TradeEnums {
         }
     }
 
+    public enum YesNoEnum{
+        NO("0","否"),YES("1","是");
+
+        private String code;
+        private String desc;
+
+        YesNoEnum(String code, String desc) {
+            this.code = code;
+            this.desc = desc;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        public String getDesc() {
+            return desc;
+        }
+    }
+
 
 }

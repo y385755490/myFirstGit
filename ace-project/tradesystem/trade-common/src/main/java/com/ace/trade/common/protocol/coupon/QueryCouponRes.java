@@ -1,9 +1,11 @@
 package com.ace.trade.common.protocol.coupon;
 
+import com.ace.trade.common.protocol.BaseRes;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class QueryCouponRes {
+public class QueryCouponRes extends BaseRes {
     /**
      * 优惠券ID
      */
