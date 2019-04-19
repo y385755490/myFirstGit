@@ -136,5 +136,23 @@ public class TradeEnums {
         }
     }
 
+    public enum UserMoneyLogTypeEnum{
+        PAID("1","订单付款"),REFUND("2","订单退款");
 
+        private String code;
+        private String desc;
+
+        UserMoneyLogTypeEnum(String code, String desc) {
+            this.code = code;
+            this.desc = desc;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        public String getDesc() {
+            return desc;
+        }
+    }
 }

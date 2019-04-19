@@ -3,16 +3,24 @@ package com.ace.trade.order.service.impl;
 import com.ace.trade.common.api.ICouponApi;
 import com.ace.trade.common.api.IGoodsApi;
 import com.ace.trade.common.api.IUserApi;
+import com.ace.trade.common.constants.MQEnums;
 import com.ace.trade.common.constants.TradeEnums;
 import com.ace.trade.common.exception.AceOrderException;
+import com.ace.trade.common.protocol.coupon.ChangeCouponStatusReq;
+import com.ace.trade.common.protocol.coupon.ChangeCouponStatusRes;
 import com.ace.trade.common.protocol.coupon.QueryCouponReq;
 import com.ace.trade.common.protocol.coupon.QueryCouponRes;
 import com.ace.trade.common.protocol.goods.QueryGoodsReq;
 import com.ace.trade.common.protocol.goods.QueryGoodsRes;
+import com.ace.trade.common.protocol.goods.ReduceGoodsNumberReq;
+import com.ace.trade.common.protocol.goods.ReduceGoodsNumberRes;
 import com.ace.trade.common.protocol.order.ConfirmOrderReq;
 import com.ace.trade.common.protocol.order.ConfirmOrderRes;
+import com.ace.trade.common.protocol.user.ChangeUserMoneyReq;
+import com.ace.trade.common.protocol.user.ChangeUserMoneyRes;
 import com.ace.trade.common.protocol.user.QueryUserReq;
 import com.ace.trade.common.protocol.user.QueryUserRes;
+import com.ace.trade.common.rocketmq.AceMQProducer;
 import com.ace.trade.common.util.IDGenerator;
 import com.ace.trade.entity.TradeOrder;
 import com.ace.trade.mapper.TradeOrderMapper;
@@ -36,6 +44,9 @@ public class OrderServiceImpl implements IOrderService {
     @Autowired
     private IUserApi userApi;
 
+    @Autowired
+    private AceMQProducer aceMQProducer;
+
     public ConfirmOrderRes confirmOrder(ConfirmOrderReq confirmOrderReq) {
         ConfirmOrderRes confirmOrderRes = new ConfirmOrderRes();
         try{
@@ -45,17 +56,71 @@ public class OrderServiceImpl implements IOrderService {
             //1.检查校验
             checkConfirmOrderReq(confirmOrderReq,queryGoodsRes);
             //2.创建不可见订单
-            saveNoConfirmOrder(confirmOrderReq);
+            String orderId = saveNoConfirmOrder(confirmOrderReq);
+            //3.调用远程服务，扣优惠券/扣库存/扣余额，如果调用成功->更改订单状态可见，失败->发送MQ消息，进行取消订单
+            callRemoteService(orderId,confirmOrderReq);
         }catch (Exception e){
             confirmOrderRes.setRetCode(TradeEnums.RetEnum.FAIL.getCode());
             confirmOrderRes.setRetInfo(e.getMessage());
         }
-        //3.调用远程服务，扣优惠券、扣库存、扣余额，如果调用成功->更改订单状态可见，失败->发送MQ消除，进行取消订单
 
         return confirmOrderRes;
     }
 
-    private void saveNoConfirmOrder(ConfirmOrderReq confirmOrderReq) throws Exception {
+    /**
+     * 调用远程服务，扣优惠券/扣库存/扣余额，如果调用成功->更改订单状态可见，失败->发送MQ消息，进行取消订单
+     * @param confirmOrderReq
+     */
+    private void callRemoteService(String orderId,ConfirmOrderReq confirmOrderReq) {
+        try{
+            //调用优惠券
+            if (StringUtils.isNotBlank(confirmOrderReq.getCouponId())){
+                ChangeCouponStatusReq changeCouponStatusReq = new ChangeCouponStatusReq();
+                changeCouponStatusReq.setCouponId(confirmOrderReq.getCouponId());
+                changeCouponStatusReq.setIsUsed(TradeEnums.YesNoEnum.YES.getCode());
+                changeCouponStatusReq.setOrderId(orderId);
+                ChangeCouponStatusRes changeCouponStatusRes = couponApi.changeCouponStatus(changeCouponStatusReq);
+                if(!StringUtils.equals(changeCouponStatusRes.getRetCode(),TradeEnums.RetEnum.SUCCESS.getCode())){
+                    throw new Exception("优惠券使用失败！");
+                }
+            }
+            //扣余额
+            if (confirmOrderReq.getMoneyPaid() != null
+                    && confirmOrderReq.getMoneyPaid().compareTo(BigDecimal.ZERO) == 1){
+                ChangeUserMoneyReq changeUserMoneyReq = new ChangeUserMoneyReq();
+                changeUserMoneyReq .setOrderId(orderId);
+                changeUserMoneyReq.setUserId(confirmOrderReq.getUserId());
+                ChangeUserMoneyRes changeUserMoneyRes = userApi.changeUserMoney(changeUserMoneyReq);
+                if (!StringUtils.equals(changeUserMoneyRes.getRetCode(), TradeEnums.RetEnum.SUCCESS.getCode())) {
+                    throw new Exception("扣除用户余额失败！")
+                }
+            }
+            //扣库存
+            ReduceGoodsNumberReq reduceGoodsNumberReq = new ReduceGoodsNumberReq();
+            reduceGoodsNumberReq.setOrderId(orderId);
+            reduceGoodsNumberReq.setGoodsId(confirmOrderReq.getGoodsId());
+            reduceGoodsNumberReq.setGoodsNumber(confirmOrderReq.getGoodsNumber());
+            ReduceGoodsNumberRes reduceGoodsNumberRes = goodsApi.reduceGoodsNumber(reduceGoodsNumberReq);
+            if (!StringUtils.equals(reduceGoodsNumberRes.getRetCode(),TradeEnums.RetEnum.SUCCESS.getCode())){
+                throw new Exception("扣库存失败！");
+            }
+            //更改订单状态
+            TradeOrder tradeOrder = new TradeOrder();
+            tradeOrder.setOrderId(orderId);
+            tradeOrder.setOrderStatus(TradeEnums.OrderStatusEnum.CONFIRM.getStatusCode());
+            tradeOrder.setConfirmTime(new Date());
+            int i = tradeOrderMapper.updateByPrimaryKeySelective(tradeOrder);
+            if (i <= 0) {
+                throw new Exception("更改订单状态失败");
+            }
+        }catch (Exception e){
+            //发送MQ消息
+
+            this.aceMQProducer.sendMessage(MQEnums.TopicEnum.ORDER_CANCELL,orderId,);
+        }
+    }
+
+    private String  saveNoConfirmOrder(ConfirmOrderReq confirmOrderReq) throws Exception {
         TradeOrder tradeOrder = new TradeOrder();
         String orderId = IDGenerator.generatorID();
         tradeOrder.setOrderId(orderId);
@@ -136,6 +201,7 @@ public class OrderServiceImpl implements IOrderService {
         if (ret != 1){
             throw new Exception("保存订单失败");
         }
+        return orderId;
     }
 
     private BigDecimal calculateShippingFee(BigDecimal goodsAmount) {
