@@ -5,6 +5,7 @@ import com.ace.trade.common.api.IGoodsApi;
 import com.ace.trade.common.api.IUserApi;
 import com.ace.trade.common.constants.MQEnums;
 import com.ace.trade.common.constants.TradeEnums;
+import com.ace.trade.common.exception.AceMQException;
 import com.ace.trade.common.exception.AceOrderException;
 import com.ace.trade.common.protocol.coupon.ChangeCouponStatusReq;
 import com.ace.trade.common.protocol.coupon.ChangeCouponStatusRes;
@@ -14,6 +15,7 @@ import com.ace.trade.common.protocol.goods.QueryGoodsReq;
 import com.ace.trade.common.protocol.goods.QueryGoodsRes;
 import com.ace.trade.common.protocol.goods.ReduceGoodsNumberReq;
 import com.ace.trade.common.protocol.goods.ReduceGoodsNumberRes;
+import com.ace.trade.common.protocol.mq.CancelOrderMQ;
 import com.ace.trade.common.protocol.order.ConfirmOrderReq;
 import com.ace.trade.common.protocol.order.ConfirmOrderRes;
 import com.ace.trade.common.protocol.user.ChangeUserMoneyReq;
@@ -25,7 +27,9 @@ import com.ace.trade.common.util.IDGenerator;
 import com.ace.trade.entity.TradeOrder;
 import com.ace.trade.mapper.TradeOrderMapper;
 import com.ace.trade.order.service.IOrderService;
+import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.rocketmq.client.producer.SendResult;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
@@ -92,7 +96,7 @@ public class OrderServiceImpl implements IOrderService {
                 changeUserMoneyReq.setUserId(confirmOrderReq.getUserId());
                 ChangeUserMoneyRes changeUserMoneyRes = userApi.changeUserMoney(changeUserMoneyReq);
                 if (!StringUtils.equals(changeUserMoneyRes.getRetCode(), TradeEnums.RetEnum.SUCCESS.getCode())) {
-                    throw new Exception("扣除用户余额失败！")
+                    throw new Exception("扣除用户余额失败！");
                 }
             }
             //扣库存
@@ -115,8 +119,20 @@ public class OrderServiceImpl implements IOrderService {
             }
         }catch (Exception e){
             //发送MQ消息
+            CancelOrderMQ cancelOrderMQ = new CancelOrderMQ();
+            cancelOrderMQ.setOrderId(orderId);
+            cancelOrderMQ.setUserId(confirmOrderReq.getUserId());
+            cancelOrderMQ.setGoodsNumber(confirmOrderReq.getGoodsNumber());
+            cancelOrderMQ.setGoodsId(confirmOrderReq.getGoodsId());
+            cancelOrderMQ.setCouponId(confirmOrderReq.getCouponId());
+            cancelOrderMQ.setUserMoney(confirmOrderReq.getMoneyPaid());
+            try {
+                SendResult sendResult = this.aceMQProducer.sendMessage(MQEnums.TopicEnum.ORDER_CANCELL, orderId, JSON.toJSONString(cancelOrderMQ));
+                System.out.println(sendResult);
+            }catch (AceMQException ace){
 
-            this.aceMQProducer.sendMessage(MQEnums.TopicEnum.ORDER_CANCELL,orderId,);
+            }
+
         }
     }
 

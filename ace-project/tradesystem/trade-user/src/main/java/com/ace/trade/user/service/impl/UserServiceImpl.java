@@ -1,14 +1,22 @@
 package com.ace.trade.user.service.impl;
 
 import com.ace.trade.common.constants.TradeEnums;
+import com.ace.trade.common.protocol.user.ChangeUserMoneyReq;
+import com.ace.trade.common.protocol.user.ChangeUserMoneyRes;
 import com.ace.trade.common.protocol.user.QueryUserReq;
 import com.ace.trade.common.protocol.user.QueryUserRes;
 import com.ace.trade.entity.TradeUser;
+import com.ace.trade.entity.TradeUserMoneyLog;
 import com.ace.trade.mapper.TradeUserMapper;
 import com.ace.trade.user.service.IUserService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.math.BigDecimal;
+import java.util.Date;
 
 @Service
 public class UserServiceImpl implements IUserService {
@@ -36,5 +44,35 @@ public class UserServiceImpl implements IUserService {
             queryUserRes.setRetInfo(TradeEnums.RetEnum.SUCCESS.getDesc());
         }
         return queryUserRes;
+    }
+
+    @Transactional
+    public ChangeUserMoneyRes changeUserMoney(ChangeUserMoneyReq changeUserMoneyReq) {
+        ChangeUserMoneyRes changeUserMoneyRes = new ChangeUserMoneyRes();
+        changeUserMoneyRes.setRetCode(TradeEnums.RetEnum.SUCCESS.getCode());
+        changeUserMoneyRes.setRetInfo(TradeEnums.RetEnum.SUCCESS.getDesc());
+        if (changeUserMoneyReq == null ){
+            throw new RuntimeException("请求参数不正确");
+        }else{
+            if (changeUserMoneyReq.getUserId() == null || changeUserMoneyReq.getUserMoney() == null){
+                throw new RuntimeException("请求参数不正确");
+            }
+            if (changeUserMoneyReq.getUserMoney().compareTo(BigDecimal.ZERO) <= 0){
+                throw new RuntimeException("金额不能小于0");
+            }
+        }
+        TradeUserMoneyLog tradeUserMoneyLog = new TradeUserMoneyLog();
+        tradeUserMoneyLog.setOrderId(changeUserMoneyReq.getOrderId());
+        tradeUserMoneyLog.setUserId(changeUserMoneyReq.getUserId());
+        tradeUserMoneyLog.setUserMoney(changeUserMoneyReq.getUserMoney());
+        tradeUserMoneyLog.setCreateTime(new Date());
+        tradeUserMoneyLog.setMoneyLogType(changeUserMoneyReq.getMoneyLogType());
+        //订单付款
+        if(StringUtils.equals(changeUserMoneyReq.getMoneyLogType(),TradeEnums.UserMoneyLogTypeEnum.PAID.getCode())){
+            tradeUserMapper
+        }
+        //订单退款
+
+        return changeUserMoneyRes;
     }
 }
