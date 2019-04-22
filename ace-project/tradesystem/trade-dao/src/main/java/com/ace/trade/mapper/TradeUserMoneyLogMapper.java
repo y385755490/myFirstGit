@@ -1,5 +1,6 @@
 package com.ace.trade.mapper;
 
+import com.ace.trade.entity.TradeUser;
 import com.ace.trade.entity.TradeUserMoneyLog;
 import com.ace.trade.entity.TradeUserMoneyLogExample;
 import com.ace.trade.entity.TradeUserMoneyLogKey;
@@ -28,4 +29,8 @@ public interface TradeUserMoneyLogMapper {
     int updateByPrimaryKeySelective(TradeUserMoneyLog record);
 
     int updateByPrimaryKey(TradeUserMoneyLog record);
+
+    int reduceUserMoney(TradeUser record);
+
+    int addUserMoney(TradeUser record);
 }

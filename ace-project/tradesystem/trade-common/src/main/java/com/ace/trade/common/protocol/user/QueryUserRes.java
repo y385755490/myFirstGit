@@ -84,17 +84,4 @@ public class QueryUserRes extends BaseRes implements Serializable {
     public void setUserMoney(BigDecimal userMoney) {
         this.userMoney = userMoney;
     }
-
-    @Override
-    public String
-    toString() {
-        return "QueryUserRes{" +
-                "userId=" + userId +
-                ", userName='" + userName + '\'' +
-                ", userMobile='" + userMobile + '\'' +
-                ", userScore=" + userScore +
-                ", userRegTime=" + userRegTime +
-                ", userMoney=" + userMoney +
-                '}';
-    }
 }

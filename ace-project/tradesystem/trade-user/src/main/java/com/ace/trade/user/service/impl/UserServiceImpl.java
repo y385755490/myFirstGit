@@ -7,7 +7,9 @@ import com.ace.trade.common.protocol.user.QueryUserReq;
 import com.ace.trade.common.protocol.user.QueryUserRes;
 import com.ace.trade.entity.TradeUser;
 import com.ace.trade.entity.TradeUserMoneyLog;
+import com.ace.trade.entity.TradeUserMoneyLogExample;
 import com.ace.trade.mapper.TradeUserMapper;
+import com.ace.trade.mapper.TradeUserMoneyLogMapper;
 import com.ace.trade.user.service.IUserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -22,6 +24,9 @@ import java.util.Date;
 public class UserServiceImpl implements IUserService {
     @Autowired
     private TradeUserMapper tradeUserMapper;
+
+    @Autowired
+    private TradeUserMoneyLogMapper tradeUserMoneyLogMapper;
 
     public QueryUserRes queryUserById(QueryUserReq queryUserReq){
         QueryUserRes queryUserRes = new QueryUserRes();
@@ -69,9 +74,35 @@ public class UserServiceImpl implements IUserService {
         tradeUserMoneyLog.setMoneyLogType(changeUserMoneyReq.getMoneyLogType());
         //订单付款
         if(StringUtils.equals(changeUserMoneyReq.getMoneyLogType(),TradeEnums.UserMoneyLogTypeEnum.PAID.getCode())){
-            tradeUserMapper
+            TradeUser tradeUser = new TradeUser();
+            tradeUser.setUserId(changeUserMoneyReq.getUserId());
+            tradeUser.setUserMoney(changeUserMoneyReq.getUserMoney());
+            tradeUserMapper.reduceUserMoney(tradeUser);
         }
         //订单退款
+        if (StringUtils.endsWith(
+                changeUserMoneyReq.getMoneyLogType(),
+                TradeEnums.UserMoneyLogTypeEnum.REFUND.getCode())){
+            //查询是否有付款记录
+            TradeUserMoneyLogExample logExample = new TradeUserMoneyLogExample();
+            logExample.createCriteria().andUserIdEqualTo(changeUserMoneyReq.getUserId()).
+                    andOrderIdEqualTo(changeUserMoneyReq.getOrderId()).
+                    andMoneyLogTypeEqualTo(TradeEnums.UserMoneyLogTypeEnum.PAID.getCode());
+            long count = this.tradeUserMoneyLogMapper.countByExample(logExample);
+            if (count == 0) {
+                throw new RuntimeException("没有付款信息，不能退款");
+            }
+            //防止多次退款
+            logExample = new TradeUserMoneyLogExample();
+            logExample.createCriteria().andUserIdEqualTo(changeUserMoneyReq.getUserId()).
+                    andOrderIdEqualTo(changeUserMoneyReq.getOrderId()).
+                    andMoneyLogTypeEqualTo(TradeEnums.UserMoneyLogTypeEnum.REFUND.getCode());
+            count = this.tradeUserMoneyLogMapper.countByExample(logExample);
+            if (count > 0){
+                throw new RuntimeException("已经退过款了，不能退款");
+            }
+        }
+        this.tradeUserMoneyLogMapper.insert(tradeUserMoneyLog);
 
         return changeUserMoneyRes;
     }
