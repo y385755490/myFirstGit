@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean id="cancelOrderProcessor" class="com.ace.trade.order.mq.processor.CancelOrderProcessor"/>
+    <bean id="orderConsumer" class="com.ace.trade.common.rocketmq.AceMQConsumer" init-method="init">
+        <property name="groupName" value="order_orderTopic_cancel_group"/>
+        <property name="nameSrvAddr" value="192.168.43.136:9876;192.168.43.178:9876"/>
+        <property name="topic" value="orderTopic"/>
+        <property name="messageProcessor" ref="cancelOrderProcessor"/>
+        <property name="tag" value="cancel"/>
+    </bean>
+</beans>

@@ -72,23 +72,28 @@ public class UserServiceImpl implements IUserService {
         tradeUserMoneyLog.setUserMoney(changeUserMoneyReq.getUserMoney());
         tradeUserMoneyLog.setCreateTime(new Date());
         tradeUserMoneyLog.setMoneyLogType(changeUserMoneyReq.getMoneyLogType());
+
+        //查询是否有付款记录
+        TradeUserMoneyLogExample logExample = new TradeUserMoneyLogExample();
+        logExample.createCriteria().andUserIdEqualTo(changeUserMoneyReq.getUserId()).
+                andOrderIdEqualTo(changeUserMoneyReq.getOrderId()).
+                andMoneyLogTypeEqualTo(TradeEnums.UserMoneyLogTypeEnum.PAID.getCode());
+        long count = this.tradeUserMoneyLogMapper.countByExample(logExample);
         //订单付款
         if(StringUtils.equals(changeUserMoneyReq.getMoneyLogType(),TradeEnums.UserMoneyLogTypeEnum.PAID.getCode())){
             TradeUser tradeUser = new TradeUser();
             tradeUser.setUserId(changeUserMoneyReq.getUserId());
             tradeUser.setUserMoney(changeUserMoneyReq.getUserMoney());
+            if (count > 0) {
+                throw new RuntimeException("已经付过款，不能再付款");
+            }
             tradeUserMapper.reduceUserMoney(tradeUser);
         }
         //订单退款
         if (StringUtils.endsWith(
                 changeUserMoneyReq.getMoneyLogType(),
                 TradeEnums.UserMoneyLogTypeEnum.REFUND.getCode())){
-            //查询是否有付款记录
-            TradeUserMoneyLogExample logExample = new TradeUserMoneyLogExample();
-            logExample.createCriteria().andUserIdEqualTo(changeUserMoneyReq.getUserId()).
-                    andOrderIdEqualTo(changeUserMoneyReq.getOrderId()).
-                    andMoneyLogTypeEqualTo(TradeEnums.UserMoneyLogTypeEnum.PAID.getCode());
-            long count = this.tradeUserMoneyLogMapper.countByExample(logExample);
+
             if (count == 0) {
                 throw new RuntimeException("没有付款信息，不能退款");
             }
