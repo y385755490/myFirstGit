@@ -52,14 +52,21 @@ public class CouponServiceImpl implements ICouponService {
                 throw new Exception("请求参数不正确，优惠券编号为空");
             }
             //使用优惠券
+            TradeCoupon record = new TradeCoupon();
+            record.setCouponId(changeCouponStatusReq.getCouponId());
+            record.setOrderId(changeCouponStatusReq.getOrderId());
             if (StringUtils.equals(changeCouponStatusReq.getIsUsed(),TradeEnums.YesNoEnum.YES.getCode())){
-
+                int i = this.tradeCouponMapper.useCoupon(record);
+                if (i <= 0) {
+                    throw new Exception("使用该优惠券失败");
+                }
             }else if (StringUtils.equals(changeCouponStatusReq.getIsUsed(),TradeEnums.YesNoEnum.NO.getCode())){
-
+                this.tradeCouponMapper.unUseCoupon(record);
             }
         }catch (Exception e){
-
+            changeCouponStatusRes.setRetCode(TradeEnums.RetEnum.FAIL.getCode());
+            changeCouponStatusRes.setRetInfo(e.getMessage());
         }
-        return null;
+        return changeCouponStatusRes;
     }
 }

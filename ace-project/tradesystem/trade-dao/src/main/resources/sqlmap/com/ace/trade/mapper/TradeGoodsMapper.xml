@@ -225,4 +225,12 @@
       add_time = #{addTime,jdbcType=TIMESTAMP}
     where goods_id = #{goodsId,jdbcType=INTEGER}
   </update>
+  <update id="reduceGoodsNumber">
+    update trade_goods set goods_number = goods_number - #{goodsNumber,jdbcType=INTEGER}
+    where goods_id = #{goodsId,jdbcType=INTEGER} and goods_number >= #{goodsNumber,jdbcType=INTEGER}
+  </update>
+  <update id="addGoodsNumber">
+    update trade_goods set goods_number = goods_number + #{goodsNumber,jdbcType=INTEGER}
+    where goods_id = #{goodsId,jdbcType=INTEGER}
+  </update>
 </mapper>
