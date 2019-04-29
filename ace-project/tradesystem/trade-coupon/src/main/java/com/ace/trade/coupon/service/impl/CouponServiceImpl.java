@@ -38,7 +38,7 @@ public class CouponServiceImpl implements ICouponService {
             queryCouponRes.setRetCode(TradeEnums.RetEnum.FAIL.getCode());
             queryCouponRes.setRetInfo(TradeEnums.RetEnum.FAIL.getDesc());
         }
-        return null;
+        return queryCouponRes;
     }
 
     public ChangeCouponStatusRes changeCouponStatus(ChangeCouponStatusReq changeCouponStatusReq) {

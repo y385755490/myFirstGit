@@ -35,8 +35,7 @@ public class RestClientProxyFactoryBeanSpring implements FactoryBean {
 
     private class ClientProxy implements InvocationHandler {
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-
-            return restTemplate.postForObject(TradeEnums.RestServerEnum.USER.getServerUrl() + method.getName(),
+            return restTemplate.postForObject(serverEnum.getServerUrl() + method.getName(),
                     args[0],method.getReturnType());
         }
     }

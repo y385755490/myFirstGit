@@ -2,7 +2,6 @@ package com.ace.trade.mapper;
 
 import com.ace.trade.entity.TradeMqProducerTemp;
 import com.ace.trade.entity.TradeMqProducerTempExample;
-import com.ace.trade.entity.TradeMqProducerTempKey;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
@@ -11,7 +10,7 @@ public interface TradeMqProducerTempMapper {
 
     int deleteByExample(TradeMqProducerTempExample example);
 
-    int deleteByPrimaryKey(TradeMqProducerTempKey key);
+    int deleteByPrimaryKey(String id);
 
     int insert(TradeMqProducerTemp record);
 
@@ -19,7 +18,7 @@ public interface TradeMqProducerTempMapper {
 
     List<TradeMqProducerTemp> selectByExample(TradeMqProducerTempExample example);
 
-    TradeMqProducerTemp selectByPrimaryKey(TradeMqProducerTempKey key);
+    TradeMqProducerTemp selectByPrimaryKey(String id);
 
     int updateByExampleSelective(@Param("record") TradeMqProducerTemp record, @Param("example") TradeMqProducerTempExample example);
 

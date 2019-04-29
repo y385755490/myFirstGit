@@ -10,9 +10,9 @@ import org.springframework.web.servlet.DispatcherServlet;
 
 public class GoodsRestServer {
     public static void main(String[] args) throws Exception {
-        Server server = new Server(TradeEnums.RestServerEnum.COUPON.getServerPort());
+        Server server = new Server(TradeEnums.RestServerEnum.GOODS.getServerPort());
         ServletContextHandler springMvcHandler = new ServletContextHandler();
-        springMvcHandler.setContextPath("/" + TradeEnums.RestServerEnum.COUPON.getContextPath());
+        springMvcHandler.setContextPath("/" + TradeEnums.RestServerEnum.GOODS.getContextPath());
         XmlWebApplicationContext context = new XmlWebApplicationContext();
         context.setConfigLocation("classpath:xml/spring-web-goods.xml");
         springMvcHandler.addEventListener(new ContextLoaderListener(context));

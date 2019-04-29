@@ -30,7 +30,7 @@ public class UserApiImpl implements IUserApi {
 
     @RequestMapping(value = "/changeUserMoney",method = RequestMethod.POST)
     @ResponseBody
-    public ChangeUserMoneyRes changeUserMoney(ChangeUserMoneyReq changeUserMoneyReq) {
+    public ChangeUserMoneyRes changeUserMoney(@RequestBody ChangeUserMoneyReq changeUserMoneyReq) {
         ChangeUserMoneyRes changeUserMoneyRes = new ChangeUserMoneyRes();
         try {
             changeUserMoneyRes = this.userService.changeUserMoney(changeUserMoneyReq);

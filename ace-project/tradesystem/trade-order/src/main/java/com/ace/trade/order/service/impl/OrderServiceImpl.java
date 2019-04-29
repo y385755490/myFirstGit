@@ -31,10 +31,12 @@ import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.rocketmq.client.producer.SendResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
+@Service
 public class OrderServiceImpl implements IOrderService {
     @Autowired
     private IGoodsApi goodsApi;
@@ -63,6 +65,7 @@ public class OrderServiceImpl implements IOrderService {
             String orderId = saveNoConfirmOrder(confirmOrderReq);
             //3.调用远程服务，扣优惠券/扣库存/扣余额，如果调用成功->更改订单状态可见，失败->发送MQ消息，进行取消订单
             callRemoteService(orderId,confirmOrderReq);
+            confirmOrderRes.setOrderId(orderId);
         }catch (Exception e){
             confirmOrderRes.setRetCode(TradeEnums.RetEnum.FAIL.getCode());
             confirmOrderRes.setRetInfo(e.getMessage());
@@ -93,6 +96,7 @@ public class OrderServiceImpl implements IOrderService {
                     && confirmOrderReq.getMoneyPaid().compareTo(BigDecimal.ZERO) == 1){
                 ChangeUserMoneyReq changeUserMoneyReq = new ChangeUserMoneyReq();
                 changeUserMoneyReq .setOrderId(orderId);
+                changeUserMoneyReq.setUserMoney(confirmOrderReq.getMoneyPaid());
                 changeUserMoneyReq.setUserId(confirmOrderReq.getUserId());
                 ChangeUserMoneyRes changeUserMoneyRes = userApi.changeUserMoney(changeUserMoneyReq);
                 if (!StringUtils.equals(changeUserMoneyRes.getRetCode(), TradeEnums.RetEnum.SUCCESS.getCode())) {
@@ -130,9 +134,8 @@ public class OrderServiceImpl implements IOrderService {
                 SendResult sendResult = this.aceMQProducer.sendMessage(MQEnums.TopicEnum.ORDER_CANCELL, orderId, JSON.toJSONString(cancelOrderMQ));
                 System.out.println(sendResult);
             }catch (AceMQException ace){
-
             }
-
+            throw new RuntimeException(e.getMessage());
         }
     }
 
@@ -174,7 +177,7 @@ public class OrderServiceImpl implements IOrderService {
             }else if (!queryCouponRes.getRetCode().equals(TradeEnums.RetEnum.SUCCESS.getCode())){
                 throw new Exception("优惠券非法");
             }
-            if (StringUtils.equals(queryCouponRes.getIsUsed(),TradeEnums.YesNoEnum.NO.getCode())){
+            if (!StringUtils.equals(queryCouponRes.getIsUsed(),TradeEnums.YesNoEnum.NO.getCode())){
                 throw new Exception("优惠券已使用");
             }
             tradeOrder.setCouponId(couponId);
@@ -199,7 +202,7 @@ public class OrderServiceImpl implements IOrderService {
                     throw new Exception("用户非法");
                 }
 
-                if (queryUserRes.getUserMoney().compareTo(confirmOrderReq.getMoneyPaid()) != -1){
+                if (queryUserRes.getUserMoney().compareTo(confirmOrderReq.getMoneyPaid()) == -1){
                     throw new Exception("余额不足");
                 }
                 tradeOrder.setMoneyPaid(confirmOrderReq.getMoneyPaid());

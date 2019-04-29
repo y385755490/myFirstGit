@@ -124,15 +124,15 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" keyColumn="order_id" keyProperty="orderId" parameterType="com.ace.trade.entity.TradeOrder" useGeneratedKeys="true">
-    insert into trade_order (user_id, order_status, pay_status, 
+  <insert id="insert" parameterType="com.ace.trade.entity.TradeOrder">
+    insert into trade_order (order_id,user_id, order_status, pay_status,
       shopping_status, address, consignee, 
       goods_id, goods_number, goods_price, 
       goods_amount, shipping_fee, order_amount, 
       coupon_id, coupon_paid, money_paid, 
       pay_amount, add_time, confirm_time, 
       pay_time)
-    values (#{userId,jdbcType=INTEGER}, #{orderStatus,jdbcType=CHAR}, #{payStatus,jdbcType=CHAR}, 
+    values (#{orderId,jdbcType=VARCHAR},#{userId,jdbcType=INTEGER}, #{orderStatus,jdbcType=CHAR}, #{payStatus,jdbcType=CHAR},
       #{shoppingStatus,jdbcType=CHAR}, #{address,jdbcType=VARCHAR}, #{consignee,jdbcType=VARCHAR}, 
       #{goodsId,jdbcType=INTEGER}, #{goodsNumber,jdbcType=INTEGER}, #{goodsPrice,jdbcType=DECIMAL}, 
       #{goodsAmount,jdbcType=DECIMAL}, #{shippingFee,jdbcType=DECIMAL}, #{orderAmount,jdbcType=DECIMAL}, 

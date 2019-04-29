@@ -9,6 +9,7 @@ import com.ace.trade.common.protocol.goods.ReduceGoodsNumberRes;
 import com.ace.trade.goods.service.IGoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,13 +21,13 @@ public class GoodsApiImpl implements IGoodsApi {
 
     @RequestMapping(value = "/queryGoods",method = RequestMethod.POST)
     @ResponseBody
-    public QueryGoodsRes queryGoods(QueryGoodsReq queryGoodsReq) {
+    public QueryGoodsRes queryGoods(@RequestBody QueryGoodsReq queryGoodsReq) {
         return this.goodsService.queryGoods(queryGoodsReq);
     }
 
     @RequestMapping(value = "/reduceGoodsNumber",method = RequestMethod.POST)
     @ResponseBody
-    public ReduceGoodsNumberRes reduceGoodsNumber(ReduceGoodsNumberReq reduceGoodsNumberReq) {
+    public ReduceGoodsNumberRes reduceGoodsNumber(@RequestBody ReduceGoodsNumberReq reduceGoodsNumberReq) {
         ReduceGoodsNumberRes reduceGoodsNumberRes = new ReduceGoodsNumberRes();
         try {
             reduceGoodsNumberRes = this.goodsService.reduceGoodsNumber(reduceGoodsNumberReq);

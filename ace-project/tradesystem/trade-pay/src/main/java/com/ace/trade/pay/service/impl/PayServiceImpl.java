@@ -11,7 +11,6 @@ import com.ace.trade.common.protocol.pay.CreatePaymentRes;
 import com.ace.trade.common.rocketmq.AceMQProducer;
 import com.ace.trade.common.util.IDGenerator;
 import com.ace.trade.entity.TradeMqProducerTemp;
-import com.ace.trade.entity.TradeMqProducerTempKey;
 import com.ace.trade.entity.TradePay;
 import com.ace.trade.entity.TradePayExample;
 import com.ace.trade.mapper.TradeMqProducerTempMapper;
@@ -86,8 +85,10 @@ public class PayServiceImpl implements IPayService {
                 paidMQ.setOrderId(tradePay.getOrderId());
                 paidMQ.setPayId(tradePay.getPayId());
                 final TradeMqProducerTemp mqProducerTemp = new TradeMqProducerTemp();
+                mqProducerTemp.setId(IDGenerator.generatorID());
                 mqProducerTemp.setGroupName("payProducerGroup");
                 mqProducerTemp.setMsgKeys(tradePay.getPayId());
+                mqProducerTemp.setMsgTopic(MQEnums.TopicEnum.PAY_PAID.getTopic());
                 mqProducerTemp.setMsgTag(MQEnums.TopicEnum.PAY_PAID.getTag());
                 mqProducerTemp.setMsgBody(JSON.toJSONString(paidMQ));
                 mqProducerTemp.setCreateTime(new Date());
@@ -100,11 +101,7 @@ public class PayServiceImpl implements IPayService {
                                     paidMQ.getPayId(), JSON.toJSONString(paidMQ));
                             System.out.println(sendResult);
                             if (sendResult.getSendStatus().equals(SendStatus.SEND_OK)) {
-                                TradeMqProducerTempKey key = new TradeMqProducerTempKey();
-                                key.setMsgTag(mqProducerTemp.getMsgTag());
-                                key.setMsgKeys(mqProducerTemp.getMsgKeys());
-                                key.setGroupName(mqProducerTemp.getGroupName());
-                                tradeMqProducerTempMapper.deleteByPrimaryKey(key);
+                                tradeMqProducerTempMapper.deleteByPrimaryKey(mqProducerTemp.getId());
                                 System.out.println("删除消息表成功");
                             }
                         } catch (AceMQException e) {

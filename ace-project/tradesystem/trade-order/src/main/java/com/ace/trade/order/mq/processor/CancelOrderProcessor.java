@@ -11,8 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.io.UnsupportedEncodingException;
-
 public class CancelOrderProcessor implements IMessageProcessor {
     public static final Logger LOGGER = LoggerFactory.getLogger(CancelOrderProcessor.class);
     @Autowired
