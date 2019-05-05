@@ -90,7 +90,7 @@ public class UserServiceImpl implements IUserService {
             tradeUserMapper.reduceUserMoney(tradeUser);
         }
         //订单退款
-        if (StringUtils.endsWith(
+        if (StringUtils.equals(
                 changeUserMoneyReq.getMoneyLogType(),
                 TradeEnums.UserMoneyLogTypeEnum.REFUND.getCode())){
 

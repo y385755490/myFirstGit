@@ -33,6 +33,7 @@ import org.apache.rocketmq.client.producer.SendResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -53,6 +54,7 @@ public class OrderServiceImpl implements IOrderService {
     @Autowired
     private AceMQProducer aceMQProducer;
 
+    @Transactional
     public ConfirmOrderRes confirmOrder(ConfirmOrderReq confirmOrderReq) {
         ConfirmOrderRes confirmOrderRes = new ConfirmOrderRes();
         try{
@@ -98,6 +100,7 @@ public class OrderServiceImpl implements IOrderService {
                 changeUserMoneyReq .setOrderId(orderId);
                 changeUserMoneyReq.setUserMoney(confirmOrderReq.getMoneyPaid());
                 changeUserMoneyReq.setUserId(confirmOrderReq.getUserId());
+                changeUserMoneyReq.setMoneyLogType(TradeEnums.UserMoneyLogTypeEnum.PAID.getCode());
                 ChangeUserMoneyRes changeUserMoneyRes = userApi.changeUserMoney(changeUserMoneyReq);
                 if (!StringUtils.equals(changeUserMoneyRes.getRetCode(), TradeEnums.RetEnum.SUCCESS.getCode())) {
                     throw new Exception("扣除用户余额失败！");
@@ -111,6 +114,9 @@ public class OrderServiceImpl implements IOrderService {
             ReduceGoodsNumberRes reduceGoodsNumberRes = goodsApi.reduceGoodsNumber(reduceGoodsNumberReq);
             if (!StringUtils.equals(reduceGoodsNumberRes.getRetCode(),TradeEnums.RetEnum.SUCCESS.getCode())){
                 throw new Exception("扣库存失败！");
+            }
+            if (1 == 1) {
+                throw new Exception("人工抛出异常");
             }
             //更改订单状态
             TradeOrder tradeOrder = new TradeOrder();

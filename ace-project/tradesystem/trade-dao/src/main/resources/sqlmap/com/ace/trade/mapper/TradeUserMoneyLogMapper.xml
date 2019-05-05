@@ -109,10 +109,9 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" keyColumn="user_id" keyProperty="userId" parameterType="com.ace.trade.entity.TradeUserMoneyLog" useGeneratedKeys="true">
-    insert into trade_user_money_log (order_id, money_log_type, user_money, 
-      create_time)
-    values (#{orderId,jdbcType=VARCHAR}, #{moneyLogType,jdbcType=CHAR}, #{userMoney,jdbcType=DECIMAL}, 
+  <insert id="insert" keyColumn="user_id" keyProperty="userId" parameterType="com.ace.trade.entity.TradeUserMoneyLog">
+    insert into trade_user_money_log (user_id,order_id, money_log_type, user_money, create_time)
+    values (#{userId,jdbcType=VARCHAR},#{orderId,jdbcType=VARCHAR}, #{moneyLogType,jdbcType=CHAR}, #{userMoney,jdbcType=DECIMAL},
       #{createTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" keyColumn="user_id" keyProperty="userId" parameterType="com.ace.trade.entity.TradeUserMoneyLog" useGeneratedKeys="true">

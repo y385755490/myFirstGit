@@ -108,11 +108,10 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" keyColumn="goods_id" keyProperty="goodsId" parameterType="com.ace.trade.entity.TradeGoodsNumberLog" useGeneratedKeys="true">
-    insert into trade_goods_number_log (order_id, goods_number, log_time
-      )
-    values (#{orderId,jdbcType=VARCHAR}, #{goodsNumber,jdbcType=INTEGER}, #{logTime,jdbcType=TIMESTAMP}
-      )
+  <insert id="insert" keyColumn="goods_id" keyProperty="goodsId" parameterType="com.ace.trade.entity.TradeGoodsNumberLog">
+    insert into trade_goods_number_log (goods_id,order_id, goods_number, log_time )
+    values (#{goodsId,jdbcType=VARCHAR},#{orderId,jdbcType=VARCHAR}, #{goodsNumber,jdbcType=INTEGER},
+      #{logTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" keyColumn="goods_id" keyProperty="goodsId" parameterType="com.ace.trade.entity.TradeGoodsNumberLog" useGeneratedKeys="true">
     insert into trade_goods_number_log
