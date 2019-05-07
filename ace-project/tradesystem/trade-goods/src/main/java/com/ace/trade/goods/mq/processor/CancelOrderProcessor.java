@@ -103,7 +103,7 @@ public class CancelOrderProcessor implements IMessageProcessor {
             updateMqConsumerLog.setMsgTag(tags);
             updateMqConsumerLog.setMsgKeys(keys);
             updateMqConsumerLog.setConsumerStatus(MQEnums.ConsumerStatusEnum.SUCCESS.getStatusCode());
-            updateMqConsumerLog.setConsumerTimes(mqConsumerLog.getConsumerTimes() + 1);
+            updateMqConsumerLog.setConsumerTimes(mqConsumerLog == null ? 1 : mqConsumerLog.getConsumerTimes() + 1);
             this.tradeMqConsumerLogMapper.updateByPrimaryKeySelective(updateMqConsumerLog);
             return true;
         } catch (Exception e) {

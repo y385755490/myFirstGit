@@ -53,62 +53,69 @@ public class UserServiceImpl implements IUserService {
 
     @Transactional
     public ChangeUserMoneyRes changeUserMoney(ChangeUserMoneyReq changeUserMoneyReq) {
-        ChangeUserMoneyRes changeUserMoneyRes = new ChangeUserMoneyRes();
-        changeUserMoneyRes.setRetCode(TradeEnums.RetEnum.SUCCESS.getCode());
-        changeUserMoneyRes.setRetInfo(TradeEnums.RetEnum.SUCCESS.getDesc());
-        if (changeUserMoneyReq == null ){
-            throw new RuntimeException("请求参数不正确");
-        }else{
-            if (changeUserMoneyReq.getUserId() == null || changeUserMoneyReq.getUserMoney() == null){
-                throw new RuntimeException("请求参数不正确");
-            }
-            if (changeUserMoneyReq.getUserMoney().compareTo(BigDecimal.ZERO) <= 0){
-                throw new RuntimeException("金额不能小于0");
-            }
-        }
-        TradeUserMoneyLog tradeUserMoneyLog = new TradeUserMoneyLog();
-        tradeUserMoneyLog.setOrderId(changeUserMoneyReq.getOrderId());
-        tradeUserMoneyLog.setUserId(changeUserMoneyReq.getUserId());
-        tradeUserMoneyLog.setUserMoney(changeUserMoneyReq.getUserMoney());
-        tradeUserMoneyLog.setCreateTime(new Date());
-        tradeUserMoneyLog.setMoneyLogType(changeUserMoneyReq.getMoneyLogType());
 
-        //查询是否有付款记录
-        TradeUserMoneyLogExample logExample = new TradeUserMoneyLogExample();
-        logExample.createCriteria().andUserIdEqualTo(changeUserMoneyReq.getUserId()).
-                andOrderIdEqualTo(changeUserMoneyReq.getOrderId()).
-                andMoneyLogTypeEqualTo(TradeEnums.UserMoneyLogTypeEnum.PAID.getCode());
-        long count = this.tradeUserMoneyLogMapper.countByExample(logExample);
-        //订单付款
-        if(StringUtils.equals(changeUserMoneyReq.getMoneyLogType(),TradeEnums.UserMoneyLogTypeEnum.PAID.getCode())){
+            ChangeUserMoneyRes changeUserMoneyRes = new ChangeUserMoneyRes();
+        try {
+            changeUserMoneyRes.setRetCode(TradeEnums.RetEnum.SUCCESS.getCode());
+            changeUserMoneyRes.setRetInfo(TradeEnums.RetEnum.SUCCESS.getDesc());
+            if (changeUserMoneyReq == null) {
+                throw new RuntimeException("请求参数不正确");
+            } else {
+                if (changeUserMoneyReq.getUserId() == null || changeUserMoneyReq.getUserMoney() == null) {
+                    throw new RuntimeException("请求参数不正确");
+                }
+                if (changeUserMoneyReq.getUserMoney().compareTo(BigDecimal.ZERO) <= 0) {
+                    throw new RuntimeException("金额不能小于0");
+                }
+            }
+            TradeUserMoneyLog tradeUserMoneyLog = new TradeUserMoneyLog();
+            tradeUserMoneyLog.setOrderId(changeUserMoneyReq.getOrderId());
+            tradeUserMoneyLog.setUserId(changeUserMoneyReq.getUserId());
+            tradeUserMoneyLog.setUserMoney(changeUserMoneyReq.getUserMoney());
+            tradeUserMoneyLog.setCreateTime(new Date());
+            tradeUserMoneyLog.setMoneyLogType(changeUserMoneyReq.getMoneyLogType());
             TradeUser tradeUser = new TradeUser();
             tradeUser.setUserId(changeUserMoneyReq.getUserId());
             tradeUser.setUserMoney(changeUserMoneyReq.getUserMoney());
-            if (count > 0) {
-                throw new RuntimeException("已经付过款，不能再付款");
-            }
-            tradeUserMapper.reduceUserMoney(tradeUser);
-        }
-        //订单退款
-        if (StringUtils.equals(
-                changeUserMoneyReq.getMoneyLogType(),
-                TradeEnums.UserMoneyLogTypeEnum.REFUND.getCode())){
 
-            if (count == 0) {
-                throw new RuntimeException("没有付款信息，不能退款");
-            }
-            //防止多次退款
-            logExample = new TradeUserMoneyLogExample();
+            //查询是否有付款记录
+            TradeUserMoneyLogExample logExample = new TradeUserMoneyLogExample();
             logExample.createCriteria().andUserIdEqualTo(changeUserMoneyReq.getUserId()).
                     andOrderIdEqualTo(changeUserMoneyReq.getOrderId()).
-                    andMoneyLogTypeEqualTo(TradeEnums.UserMoneyLogTypeEnum.REFUND.getCode());
-            count = this.tradeUserMoneyLogMapper.countByExample(logExample);
-            if (count > 0){
-                throw new RuntimeException("已经退过款了，不能退款");
-            }
-        }
-        this.tradeUserMoneyLogMapper.insert(tradeUserMoneyLog);
+                    andMoneyLogTypeEqualTo(TradeEnums.UserMoneyLogTypeEnum.PAID.getCode());
+            long count = this.tradeUserMoneyLogMapper.countByExample(logExample);
+            //订单付款
+            if (StringUtils.equals(changeUserMoneyReq.getMoneyLogType(), TradeEnums.UserMoneyLogTypeEnum.PAID.getCode())) {
 
+                if (count > 0) {
+                    throw new RuntimeException("已经付过款，不能再付款");
+                }
+                tradeUserMapper.reduceUserMoney(tradeUser);
+            }
+            //订单退款
+            if (StringUtils.equals(
+                    changeUserMoneyReq.getMoneyLogType(),
+                    TradeEnums.UserMoneyLogTypeEnum.REFUND.getCode())) {
+
+                if (count == 0) {
+                    throw new RuntimeException("没有付款信息，不能退款");
+                }
+                //防止多次退款
+                logExample = new TradeUserMoneyLogExample();
+                logExample.createCriteria().andUserIdEqualTo(changeUserMoneyReq.getUserId()).
+                        andOrderIdEqualTo(changeUserMoneyReq.getOrderId()).
+                        andMoneyLogTypeEqualTo(TradeEnums.UserMoneyLogTypeEnum.REFUND.getCode());
+                count = this.tradeUserMoneyLogMapper.countByExample(logExample);
+                if (count > 0) {
+                    throw new RuntimeException("已经退过款了，不能退款");
+                }
+                int i = tradeUserMapper.addUserMoney(tradeUser);
+                System.out.println(i);
+            }
+            this.tradeUserMoneyLogMapper.insert(tradeUserMoneyLog);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         return changeUserMoneyRes;
     }
 }

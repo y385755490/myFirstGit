@@ -123,9 +123,13 @@
       #{msgBody,jdbcType=VARCHAR}, #{consumerStatus,jdbcType=VARCHAR}, #{consumerTimes,jdbcType=INTEGER}, 
       #{remark,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" keyColumn="group_name" keyProperty="groupName" parameterType="com.ace.trade.entity.TradeMqConsumerLog" useGeneratedKeys="true">
+  <insert id="insertSelective" keyColumn="group_name" keyProperty="groupName"
+          parameterType="com.ace.trade.entity.TradeMqConsumerLog">
     insert into trade_mq_consumer_log
     <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="groupName != null">
+        group_name,
+      </if>
       <if test="msgTag != null">
         msg_tag,
       </if>
@@ -149,6 +153,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="groupName != null">
+        #{groupName,jdbcType=VARCHAR},
+      </if>
       <if test="msgTag != null">
         #{msgTag,jdbcType=VARCHAR},
       </if>

@@ -54,7 +54,6 @@ public class OrderServiceImpl implements IOrderService {
     @Autowired
     private AceMQProducer aceMQProducer;
 
-    @Transactional
     public ConfirmOrderRes confirmOrder(ConfirmOrderReq confirmOrderReq) {
         ConfirmOrderRes confirmOrderRes = new ConfirmOrderRes();
         try{
