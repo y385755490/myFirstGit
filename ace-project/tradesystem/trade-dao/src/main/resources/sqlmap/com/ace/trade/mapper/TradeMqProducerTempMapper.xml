@@ -109,11 +109,11 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.ace.trade.entity.TradeMqProducerTemp" useGeneratedKeys="true">
-    insert into trade_mq_producer_temp (msg_topic, group_name, msg_tag, 
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.ace.trade.entity.TradeMqProducerTemp">
+    insert into trade_mq_producer_temp (id,msg_topic, group_name, msg_tag,
       msg_keys, msg_body, create_time
       )
-    values (#{msgTopic,jdbcType=VARCHAR}, #{groupName,jdbcType=VARCHAR}, #{msgTag,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR},#{msgTopic,jdbcType=VARCHAR}, #{groupName,jdbcType=VARCHAR}, #{msgTag,jdbcType=VARCHAR},
       #{msgKeys,jdbcType=VARCHAR}, #{msgBody,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
       )
   </insert>

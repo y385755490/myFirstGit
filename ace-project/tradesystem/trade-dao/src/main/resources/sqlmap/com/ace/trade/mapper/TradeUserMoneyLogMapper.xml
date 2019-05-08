@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.ace.trade.entity.TradeUserMoneyLog">
     <id column="user_id" jdbcType="INTEGER" property="userId" />
     <id column="order_id" jdbcType="VARCHAR" property="orderId" />
-    <result column="money_log_type" jdbcType="CHAR" property="moneyLogType" />
+    <id column="money_log_type" jdbcType="CHAR" property="moneyLogType" />
     <result column="user_money" jdbcType="DECIMAL" property="userMoney" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
@@ -97,11 +97,13 @@
     from trade_user_money_log
     where user_id = #{userId,jdbcType=INTEGER}
       and order_id = #{orderId,jdbcType=VARCHAR}
+      and money_log_type = #{moneyLogType,jdbcType=CHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="com.ace.trade.entity.TradeUserMoneyLogKey">
     delete from trade_user_money_log
     where user_id = #{userId,jdbcType=INTEGER}
       and order_id = #{orderId,jdbcType=VARCHAR}
+      and money_log_type = #{moneyLogType,jdbcType=CHAR}
   </delete>
   <delete id="deleteByExample" parameterType="com.ace.trade.entity.TradeUserMoneyLogExample">
     delete from trade_user_money_log
@@ -110,7 +112,8 @@
     </if>
   </delete>
   <insert id="insert" keyColumn="user_id" keyProperty="userId" parameterType="com.ace.trade.entity.TradeUserMoneyLog">
-    insert into trade_user_money_log (user_id,order_id, money_log_type, user_money, create_time)
+    insert into trade_user_money_log (user_id,order_id, money_log_type, user_money,
+      create_time)
     values (#{userId,jdbcType=VARCHAR},#{orderId,jdbcType=VARCHAR}, #{moneyLogType,jdbcType=CHAR}, #{userMoney,jdbcType=DECIMAL},
       #{createTime,jdbcType=TIMESTAMP})
   </insert>
@@ -188,9 +191,6 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.ace.trade.entity.TradeUserMoneyLog">
     update trade_user_money_log
     <set>
-      <if test="moneyLogType != null">
-        money_log_type = #{moneyLogType,jdbcType=CHAR},
-      </if>
       <if test="userMoney != null">
         user_money = #{userMoney,jdbcType=DECIMAL},
       </if>
@@ -200,21 +200,14 @@
     </set>
     where user_id = #{userId,jdbcType=INTEGER}
       and order_id = #{orderId,jdbcType=VARCHAR}
+      and money_log_type = #{moneyLogType,jdbcType=CHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.ace.trade.entity.TradeUserMoneyLog">
     update trade_user_money_log
-    set money_log_type = #{moneyLogType,jdbcType=CHAR},
-      user_money = #{userMoney,jdbcType=DECIMAL},
+    set user_money = #{userMoney,jdbcType=DECIMAL},
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where user_id = #{userId,jdbcType=INTEGER}
       and order_id = #{orderId,jdbcType=VARCHAR}
-  </update>
-  <update id="reduceUserMoney" parameterType="com.ace.trade.entity.TradeUser">
-    update trade_user set user_money = user_money - #{userId,jdbcType=DECIMAL}
-    where user_id = #{userId,jdbcType=INTEGER} and user_money >= #{userMoney,jdbcType=DECIMAL}
-  </update>
-  <update id="addUserMoney" parameterType="com.ace.trade.entity.TradeUser">
-    update trade_user set user_money = user_money + #{userMoney,jdbcType=DECIMAL}
-    where user_id = #{userId,jdbcType=INTEGER}
+      and money_log_type = #{moneyLogType,jdbcType=CHAR}
   </update>
 </mapper>

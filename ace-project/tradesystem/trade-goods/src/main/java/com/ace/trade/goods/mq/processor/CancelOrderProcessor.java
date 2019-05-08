@@ -103,7 +103,7 @@ public class CancelOrderProcessor implements IMessageProcessor {
             updateMqConsumerLog.setMsgTag(tags);
             updateMqConsumerLog.setMsgKeys(keys);
             updateMqConsumerLog.setConsumerStatus(MQEnums.ConsumerStatusEnum.SUCCESS.getStatusCode());
-            updateMqConsumerLog.setConsumerTimes(mqConsumerLog == null ? 1 : mqConsumerLog.getConsumerTimes() + 1);
+            updateMqConsumerLog.setConsumerTimes(1);
             this.tradeMqConsumerLogMapper.updateByPrimaryKeySelective(updateMqConsumerLog);
             return true;
         } catch (Exception e) {
@@ -112,8 +112,8 @@ public class CancelOrderProcessor implements IMessageProcessor {
             updateMqConsumerLog.setGroupName(mqConsumerLog.getGroupName());
             updateMqConsumerLog.setMsgTag(mqConsumerLog.getMsgTag());
             updateMqConsumerLog.setMsgKeys(mqConsumerLog.getMsgKeys());
-            updateMqConsumerLog.setConsumerStatus(MQEnums.ConsumerStatusEnum.SUCCESS.getStatusCode());
-            updateMqConsumerLog.setConsumerTimes(mqConsumerLog.getConsumerTimes() + 1);
+            updateMqConsumerLog.setConsumerStatus(MQEnums.ConsumerStatusEnum.FAIL.getStatusCode());
+            updateMqConsumerLog.setConsumerTimes(mqConsumerLog == null ? 1 : mqConsumerLog.getConsumerTimes() + 1);
             this.tradeMqConsumerLogMapper.updateByPrimaryKeySelective(updateMqConsumerLog);
             return false;
         }

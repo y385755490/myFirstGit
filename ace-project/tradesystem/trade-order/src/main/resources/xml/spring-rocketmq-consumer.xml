@@ -10,4 +10,12 @@
         <property name="messageProcessor" ref="cancelOrderProcessor"/>
         <property name="tag" value="cancel"/>
     </bean>
+    <bean id="payProcessor" class="com.ace.trade.order.mq.processor.PayProcessor"/>
+    <bean id="payConsumer" class="com.ace.trade.common.rocketmq.AceMQConsumer" init-method="init">
+        <property name="groupName" value="PayProducerGroup"/>
+        <property name="nameSrvAddr" value="192.168.43.136:9876;192.168.43.178:9876"/>
+        <property name="topic" value="payTopic"/>
+        <property name="messageProcessor" ref="payProcessor"/>
+        <property name="tag" value="paid"/>
+    </bean>
 </beans>

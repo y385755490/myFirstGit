@@ -10,11 +10,6 @@ import java.util.Date;
  */
 public class TradeUserMoneyLog extends TradeUserMoneyLogKey implements Serializable {
     /**
-     * 日志类型 1订单付款 2订单退款
-     */
-    private String moneyLogType;
-
-    /**
      * 金额
      */
     private BigDecimal userMoney;
@@ -25,14 +20,6 @@ public class TradeUserMoneyLog extends TradeUserMoneyLogKey implements Serializa
     private Date createTime;
 
     private static final long serialVersionUID = 1L;
-
-    public String getMoneyLogType() {
-        return moneyLogType;
-    }
-
-    public void setMoneyLogType(String moneyLogType) {
-        this.moneyLogType = moneyLogType;
-    }
 
     public BigDecimal getUserMoney() {
         return userMoney;
@@ -87,7 +74,6 @@ public class TradeUserMoneyLog extends TradeUserMoneyLogKey implements Serializa
         sb.append(getClass().getSimpleName());
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
-        sb.append(", moneyLogType=").append(moneyLogType);
         sb.append(", userMoney=").append(userMoney);
         sb.append(", createTime=").append(createTime);
         sb.append(", serialVersionUID=").append(serialVersionUID);

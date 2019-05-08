@@ -1,7 +1,7 @@
 package com.ace.trade.order.mq.processor;
 
 import com.ace.trade.common.constants.TradeEnums;
-import com.ace.trade.common.protocol.mq.CancelOrderMQ;
+import com.ace.trade.common.protocol.mq.PaidMQ;
 import com.ace.trade.common.rocketmq.IMessageProcessor;
 import com.ace.trade.entity.TradeOrder;
 import com.ace.trade.mapper.TradeOrderMapper;
@@ -11,8 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class CancelOrderProcessor implements IMessageProcessor {
-    public static final Logger LOGGER = LoggerFactory.getLogger(CancelOrderProcessor.class);
+public class PayProcessor implements IMessageProcessor {
+    public static final Logger LOGGER = LoggerFactory.getLogger(PayProcessor.class);
     @Autowired
     private TradeOrderMapper tradeOrderMapper;
 
@@ -23,10 +23,12 @@ public class CancelOrderProcessor implements IMessageProcessor {
             String tags = messageExt.getTags();
             String keys = messageExt.getKeys();
             LOGGER.info("user CancelOrderProcessor recive message:" + messageExt);
-            CancelOrderMQ cancelOrderMQ = JSON.parseObject(body,CancelOrderMQ.class);
+
+            PaidMQ paidMQ = JSON.parseObject(body, PaidMQ.class);
+
             TradeOrder record = new TradeOrder();
-            record.setOrderId(cancelOrderMQ.getOrderId());
-            record.setOrderStatus(TradeEnums.OrderStatusEnum.CANCEL.getStatusCode());
+            record.setOrderId(paidMQ.getOrderId());
+            record.setPayStatus(TradeEnums.PayStatusEnum.PAID.getStatusCode());
             tradeOrderMapper.updateByPrimaryKeySelective(record);
             return true;
         } catch (Exception e) {

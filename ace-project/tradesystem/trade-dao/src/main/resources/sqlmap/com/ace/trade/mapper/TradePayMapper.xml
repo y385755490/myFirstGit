@@ -106,10 +106,10 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" keyColumn="pay_id" keyProperty="payId" parameterType="com.ace.trade.entity.TradePay" useGeneratedKeys="true">
-    insert into trade_pay (order_id, pay_amount, is_paid
+  <insert id="insert" keyColumn="pay_id" keyProperty="payId" parameterType="com.ace.trade.entity.TradePay">
+    insert into trade_pay (pay_id,order_id, pay_amount, is_paid
       )
-    values (#{orderId,jdbcType=VARCHAR}, #{payAmount,jdbcType=DECIMAL}, #{isPaid,jdbcType=CHAR}
+    values (#{payId,jdbcType=VARCHAR},#{orderId,jdbcType=VARCHAR}, #{payAmount,jdbcType=DECIMAL}, #{isPaid,jdbcType=CHAR}
       )
   </insert>
   <insert id="insertSelective" keyColumn="pay_id" keyProperty="payId" parameterType="com.ace.trade.entity.TradePay" useGeneratedKeys="true">

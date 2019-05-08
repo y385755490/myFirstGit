@@ -17,6 +17,11 @@ public class TradeUserMoneyLogKey implements Serializable {
      */
     private String orderId;
 
+    /**
+     * 日志类型 1订单付款 2订单退款
+     */
+    private String moneyLogType;
+
     private static final long serialVersionUID = 1L;
 
     public Integer getUserId() {
@@ -35,6 +40,14 @@ public class TradeUserMoneyLogKey implements Serializable {
         this.orderId = orderId;
     }
 
+    public String getMoneyLogType() {
+        return moneyLogType;
+    }
+
+    public void setMoneyLogType(String moneyLogType) {
+        this.moneyLogType = moneyLogType;
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -48,7 +61,8 @@ public class TradeUserMoneyLogKey implements Serializable {
         }
         TradeUserMoneyLogKey other = (TradeUserMoneyLogKey) that;
         return (this.getUserId() == null ? other.getUserId() == null : this.getUserId().equals(other.getUserId()))
-            && (this.getOrderId() == null ? other.getOrderId() == null : this.getOrderId().equals(other.getOrderId()));
+            && (this.getOrderId() == null ? other.getOrderId() == null : this.getOrderId().equals(other.getOrderId()))
+            && (this.getMoneyLogType() == null ? other.getMoneyLogType() == null : this.getMoneyLogType().equals(other.getMoneyLogType()));
     }
 
     @Override
@@ -57,6 +71,7 @@ public class TradeUserMoneyLogKey implements Serializable {
         int result = 1;
         result = prime * result + ((getUserId() == null) ? 0 : getUserId().hashCode());
         result = prime * result + ((getOrderId() == null) ? 0 : getOrderId().hashCode());
+        result = prime * result + ((getMoneyLogType() == null) ? 0 : getMoneyLogType().hashCode());
         return result;
     }
 
@@ -68,6 +83,7 @@ public class TradeUserMoneyLogKey implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", userId=").append(userId);
         sb.append(", orderId=").append(orderId);
+        sb.append(", moneyLogType=").append(moneyLogType);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

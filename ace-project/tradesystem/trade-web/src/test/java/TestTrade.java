@@ -1,10 +1,15 @@
 import com.ace.trade.common.api.*;
+import com.ace.trade.common.constants.TradeEnums;
 import com.ace.trade.common.protocol.coupon.QueryCouponReq;
 import com.ace.trade.common.protocol.coupon.QueryCouponRes;
 import com.ace.trade.common.protocol.goods.QueryGoodsReq;
 import com.ace.trade.common.protocol.goods.QueryGoodsRes;
 import com.ace.trade.common.protocol.order.ConfirmOrderReq;
 import com.ace.trade.common.protocol.order.ConfirmOrderRes;
+import com.ace.trade.common.protocol.pay.CallbackPaymentReq;
+import com.ace.trade.common.protocol.pay.CallbackPaymentRes;
+import com.ace.trade.common.protocol.pay.CreatePaymentReq;
+import com.ace.trade.common.protocol.pay.CreatePaymentRes;
 import com.ace.trade.common.protocol.user.QueryUserReq;
 import com.ace.trade.common.protocol.user.QueryUserRes;
 import com.alibaba.fastjson.JSON;
@@ -72,5 +77,23 @@ public class TestTrade {
         confirmOrderReq.setCouponId("123456789");
         ConfirmOrderRes confirmOrderRes = orderApi.confirmOrder(confirmOrderReq);
         System.out.println(JSON.toJSONString(confirmOrderRes));
+    }
+
+    @Test
+    public void testCreatePayment(){
+        CreatePaymentReq createPaymentReq = new CreatePaymentReq();
+        createPaymentReq.setPayAmount(new BigDecimal("4800"));
+        createPaymentReq.setOrderId("2402a5f40fd547e9bcd92efe090b6fa5");
+        CreatePaymentRes createPaymentRes = payApi.createPayment(createPaymentReq);
+        System.out.println(JSON.toJSONString(createPaymentRes));
+    }
+
+    @Test
+    public void testCallbackPayment(){
+        CallbackPaymentReq callbackPaymentReq = new CallbackPaymentReq();
+        callbackPaymentReq.setPayId("3a74d63949b34ab9957b49e9b6d88b3e");
+        callbackPaymentReq.setIsPaid(TradeEnums.YesNoEnum.YES.getCode());
+        CallbackPaymentRes callbackPaymentRes = payApi.callbackPayment(callbackPaymentReq);
+        System.out.println(JSON.toJSONString(callbackPaymentRes));
     }
 }
